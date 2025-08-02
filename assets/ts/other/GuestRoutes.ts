@@ -26,4 +26,8 @@ export default class GuestRoutes {
     static getAllRoutesNames(){
         return this.getAllRoutes().map(route => route.NAME)
     }
+
+    static getAllRoutesPaths(){
+        return this.getAllRoutes().map(route => route.PATH)
+    }
 }

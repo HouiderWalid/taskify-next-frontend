@@ -137,7 +137,7 @@ class CustomRequestBody<ResponseType extends typeof JsonMapper> {
     }
 }
 
-export function useFetchData<ResponseType extends typeof JsonMapper>(
+export function useFetchedData<ResponseType extends typeof JsonMapper>(
     {
         data = {},
         method = 'GET',

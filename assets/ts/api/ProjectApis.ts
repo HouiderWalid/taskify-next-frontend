@@ -1,4 +1,4 @@
-import type {ApiData} from "~/composables/useFetchData";
+import {ApiData} from "@/composables/useFetchedData";
 
 export const useCreateProjectApi = (data: any, query: object = {}): ApiData => {
     return {method: 'POST', uri: 'project', data, query}

@@ -1,5 +1,5 @@
-import Pagination from "assets/ts/models/Pagination";
-import TaskCollection from "assets/ts/models/task/TaskCollection";
+import Pagination from "@/assets/ts/models/Pagination";
+import TaskCollection from "@/assets/ts/models/task/TaskCollection";
 
 export default class TaskPagination extends Pagination {
 

@@ -1,5 +1,5 @@
-import JsonMapper from "../helpers/JsonMapper.ts";
-import User from "./User.ts";
+import JsonMapper from "@/assets/ts/helpers/JsonMapper";
+import User from "@/assets/ts/models/User";
 
 export default class AuthData extends JsonMapper {
 

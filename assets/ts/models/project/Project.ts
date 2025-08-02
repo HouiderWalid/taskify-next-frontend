@@ -1,5 +1,5 @@
-import JsonMappedModel from "assets/ts/helpers/JsonMappedModel";
-import TaskCollection from "assets/ts/models/task/TaskCollection";
+import JsonMappedModel from "@/assets/ts/helpers/JsonMappedModel";
+import TaskCollection from "@/assets/ts/models/task/TaskCollection";
 
 export default class Project extends JsonMappedModel {
 
@@ -48,6 +48,10 @@ export default class Project extends JsonMappedModel {
 
     static getTasksAssignedMembersCountAttributeName() {
         return this.task_assigned_members_count_attribute_name
+    }
+
+    getId() {
+        return this.getAttribute(Project.getIdAttributeName())
     }
 
     getName() {

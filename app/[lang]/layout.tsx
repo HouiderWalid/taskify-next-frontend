@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import "../globals.css";
 import React from "react";
+import StoreProvider from "@/store/StoreProvider";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -17,12 +18,14 @@ export default async function RootLayout(
     }>
 ) {
 
-    const { lang } = await params
-    console.log('lang', lang)
+    const {lang} = await params
+
     return (
-        <html lang="en">
+        <html lang={lang}>
         <body>
-        {children}
+        <StoreProvider>
+            {children}
+        </StoreProvider>
         </body>
         </html>
     );

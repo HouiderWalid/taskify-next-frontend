@@ -5,15 +5,14 @@ import {
     SupportedLocale
 } from "@/store/localeStore";
 import {ReadonlyRequestCookies, ResponseCookies} from "next/dist/server/web/spec-extension/adapters/request-cookies";
-import {cookies} from "next/headers";
 import {useDispatch, useSelector} from "react-redux";
+import {RequestCookies} from "next/dist/server/web/spec-extension/cookies";
 
-export async function useLocale() {
-    const readOnlyRequestCookies: ReadonlyRequestCookies = await cookies()
+export function useServerLocale(cookies: ReadonlyRequestCookies | RequestCookies) {
     let language: SupportedLocale = 'en';
 
     try {
-        const appStateData = JSON.parse(readOnlyRequestCookies.get(encodeURIComponent(STORAGE_PERSISTENCE_KEY))?.value ?? '')
+        const appStateData = JSON.parse(cookies.get(encodeURIComponent(STORAGE_PERSISTENCE_KEY))?.value ?? '')
         language = String(appStateData?.locale).replace(/^"|"$/g, '') as SupportedLocale;
     } catch (e) {
 
@@ -43,13 +42,13 @@ export async function useLocale() {
 export function useClientLocale() {
 
     const language = useSelector(getLocale)
+    const dispatch = useDispatch();
 
     return {
         language,
         t: (path: string) => getTranslation(language, path),
         direction: language === 'ar' ? 'rtl' : 'ltr',
         setLocale(locale: SupportedLocale) {
-            const dispatch = useDispatch();
             dispatch(setLocale(locale));
         }
     }

@@ -1,4 +1,4 @@
-import JsonMapper from "assets/ts/helpers/JsonMapper";
+import JsonMapper from "@/assets/ts/helpers/JsonMapper";
 
 export default class Response extends JsonMapper {
 

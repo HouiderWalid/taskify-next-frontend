@@ -1,4 +1,4 @@
-import JsonMapper from "../helpers/JsonMapper.ts";
+import JsonMapper from "@/assets/ts/helpers/JsonMapper";
 
 export default class ApiResponse extends JsonMapper {
 
@@ -25,11 +25,7 @@ export default class ApiResponse extends JsonMapper {
         return this.getAttribute(ApiResponse.getDataAttributeName())
     }
 
-    getVisitId() {
-        return this.getResponseData()?.['visit_id'] ?? null
-    }
-
-    getPublishableKey() {
-        return this.getResponseData()?.['publishable_key'] ?? null
+    getData() {
+        return this.getAttribute(ApiResponse.getDataAttributeName())
     }
 }

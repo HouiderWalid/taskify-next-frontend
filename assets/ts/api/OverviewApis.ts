@@ -1,4 +1,4 @@
-import type {ApiData} from "~/composables/useFetchData";
+import {ApiData} from "@/composables/useFetchedData";
 
 export const useProjectsCountApi = (): ApiData => {
     return {method: 'GET', uri: 'overview/projects_count'}

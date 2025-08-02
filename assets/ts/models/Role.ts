@@ -1,4 +1,4 @@
-import JsonMappedModel from "../helpers/JsonMappedModel.ts";
+import JsonMappedModel from "@/assets/ts/helpers/JsonMappedModel";
 
 export default class Role extends JsonMappedModel {
 

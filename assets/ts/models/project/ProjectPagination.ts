@@ -1,5 +1,5 @@
-import ProjectCollection from "assets/ts/models/project/ProjectCollection";
-import Pagination from "assets/ts/models/Pagination";
+import ProjectCollection from "@/assets/ts/models/project/ProjectCollection";
+import Pagination from "@/assets/ts/models/Pagination";
 
 export default class ProjectPagination extends Pagination {
 

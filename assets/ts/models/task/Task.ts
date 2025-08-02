@@ -1,6 +1,6 @@
-import JsonMappedModel from "assets/ts/helpers/JsonMappedModel";
-import User from "assets/ts/models/user/User";
-import Project from "assets/ts/models/project/Project";
+import JsonMappedModel from "@/assets/ts/helpers/JsonMappedModel";
+import User from "@/assets/ts/models/User";
+import Project from "@/assets/ts/models/project/Project";
 
 export default class Task extends JsonMappedModel {
 
@@ -61,6 +61,10 @@ export default class Task extends JsonMappedModel {
 
     static getAssignedToUserAttributeName() {
         return this.assigned_to_user_attribute_name
+    }
+
+    getId() {
+        return this.getAttribute(Task.getIdAttributeName())
     }
 
     getTitle() {

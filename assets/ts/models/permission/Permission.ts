@@ -1,4 +1,4 @@
-import JsonMappedModel from "assets/ts/helpers/JsonMappedModel";
+import JsonMappedModel from "@/assets/ts/helpers/JsonMappedModel";
 
 export default class Permission extends JsonMappedModel {
 

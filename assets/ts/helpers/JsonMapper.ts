@@ -1,7 +1,7 @@
 import JsonArrayMapper from "./JsonArrayMapper";
 import JsonMapperModuleResolver from "./JsonMapperModuleResolver";
 import {isPlainObject} from "@reduxjs/toolkit";
-import {isFunction} from "./helpers.ts";
+import {isFunction} from "./helpers";
 
 type JsonObject = {
     [key: string]: any;

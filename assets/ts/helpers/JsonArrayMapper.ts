@@ -1,4 +1,4 @@
-import JsonMapper from "./JsonMapper.ts";
+import JsonMapper from "@/assets/ts/helpers/JsonMapper";
 import JsonMapperModuleResolver from "./JsonMapperModuleResolver";
 
 export default class JsonArrayMapper<T> extends Array<T> {
