@@ -13,12 +13,12 @@ import {STORAGE_PERSISTENCE_KEY as LOCALE_STORAGE_KEY} from "@/store/localeStore
 
 let locales = ['en', 'ar', 'fr']
 
-const PAGE_PERMISSION_MAP: Record<string, any> = {
+const PAGE_PERMISSION_MAP: Record<string, string> = {
     '/': Permission.VIEW_OVERVIEW,
     '/users': Permission.VIEW_USERS,
     '/projects': Permission.VIEW_PROJECTS,
     '/tasks': Permission.VIEW_TASKS,
-    '/settings': Permission.VIEW_SETTINGS,
+    '/settings': Permission.VIEW_SETTINGS
 }
 
 function getLocale(request: NextRequest) {
@@ -70,7 +70,7 @@ async function checkAuth(request: NextRequest) {
                 store.dispatch(setUser(data))
             }
         } catch (e) {
-            console.log(e)
+
         }
     }
 
@@ -84,7 +84,7 @@ async function checkAuth(request: NextRequest) {
     }
 
     const routePermission = PAGE_PERMISSION_MAP[noLocalPathname]
-    if (routePermission && !user?.isPermitted(routePermission)) {
+    if (routePermission && user instanceof User && !user?.isPermitted(routePermission)) {
         request.nextUrl.pathname = ['/', locale, DashboardRoutes.NOT_PERMITTED.PATH].join('')
     }
 

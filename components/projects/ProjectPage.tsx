@@ -119,7 +119,7 @@ export default function ProjectPage() {
     return <>
         <div className="flex justify-between items-center">
             <span className="font-bold text-2xl">{t('project.title')}</span>
-            <Button onClick={createNewProject} variant="filled">
+            <Button id="open-create-project-modal" onClick={createNewProject} variant="filled">
                 {t('project.buttons.newProjects')}
             </Button>
         </div>
@@ -134,14 +134,14 @@ export default function ProjectPage() {
             }
         </PaginatedItems>
 
-        <ProjectFormModal pagination={pagination} value={isFormOpen} project={selectedProject} onSuccessSnackMessage={setSnackSuccessMessage}
+        <ProjectFormModal id="project-modal" pagination={pagination} value={isFormOpen} project={selectedProject} onSuccessSnackMessage={setSnackSuccessMessage}
                           onErrorSnackMessage={setSnackErrorMessage} onPaginate={getFilteredProjects} onClose={() => setIsFormOpen(false)}/>
 
         <ConfirmationModal loading={deleteLoading} value={isDeleteModalOpen} onAction={deleteProject}
                            title={t('project.dialogs.delete.title')} onClose={() => setIsDeleteModalOpen(false)}
                            description={t('project.dialogs.delete.description')}/>
 
-        <FormAlertMessage type={alertStatus} message={alertMessage} absolute={true} timeout={5000} open={!!alertMessage}
+        <FormAlertMessage type={alertStatus} message={alertMessage} fullWidth={false} absolute={true} timeout={5000} open={!!alertMessage}
                           onCloseAction={() => setAlertMessage('')}/>
     </>
 }

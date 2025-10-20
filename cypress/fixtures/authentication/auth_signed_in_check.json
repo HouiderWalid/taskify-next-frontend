@@ -1,0 +1,12 @@
+{
+  "code": 200,
+  "data": {
+    "full_name": "Full Name",
+    "permissions": [
+      {
+        "name": "view-overview"
+      }
+    ]
+  },
+  "messages": ""
+}

@@ -30,6 +30,10 @@ export default function SignInForm() {
         formState: {errors},
     } = useForm<FormData>({
         resolver: zodResolver(schema),
+        defaultValues: {
+            email: '',
+            password: ''
+        }
     });
 
     const [loading, setLoading] = useState(false);
@@ -51,6 +55,7 @@ export default function SignInForm() {
                 router.push("/");
             }, AuthData)
             .onFailure((message: any) => {
+                console.log('error message: ', message)
                 setAlertStatus('error')
                 setAlertMessage(message)
             })
@@ -58,13 +63,13 @@ export default function SignInForm() {
     }
 
     return <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-        <FormAlertMessage type={alertStatus} message={alertMessage} open={!!alertMessage} onCloseAction={() => setAlertMessage('')}/>
+        <FormAlertMessage type={alertStatus} message={alertMessage} open={!!alertMessage}
+                          onCloseAction={() => setAlertMessage('')}/>
         <div className="flex flex-col">
             <TextField id="email" name="email" registerAction={register} label="Email" theme="blurry"
                        placeholder="Enter your email" errorMessages={[errors.email?.message]}/>
             <TextField id="password" name="password" registerAction={register} type="password" label="Password"
-                       theme="blurry"
-                       placeholder="Enter your password" errorMessages={[errors.password?.message]}/>
+                       theme="blurry" placeholder="Enter your password" errorMessages={[errors.password?.message]}/>
         </div>
         <Button variant="filled-reversed" type="submit" loading={loading}>Sign In</Button>
     </form>

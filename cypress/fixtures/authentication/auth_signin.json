@@ -1,0 +1,14 @@
+{
+  "code": 200,
+  "data": {
+    "token": "fake-token",
+    "user": {
+      "permissions": [
+        {
+          "name": "view-overview"
+        }
+      ]
+    }
+  },
+  "messages": ""
+}

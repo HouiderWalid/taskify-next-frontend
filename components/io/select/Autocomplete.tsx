@@ -29,7 +29,7 @@ type Props = {
 
 export default function Autocomplete(
     {
-        value = null,
+        value = undefined,
         setValue = (value) => {
         },
         name,

@@ -26,21 +26,24 @@ export default function ProjectItem(props: Props) {
 
     const {t} = useClientLocale();
 
-    return <div
+    return <div id={'project-card-' + props.project.getId()}
         className="flex flex-col gap-8 p-4 border bg-white hover:shadow-xl shadow-sm rounded-xl border-gray-200">
         <div className="flex justify-between">
             <div className="flex flex-col gap-4">
                 <div className="flex gap-2 items-center">
-                    <span className="text-2xl font-bold">{name}</span>
+                    <span id={'project-card-name-' + props.project.getId()} className="text-2xl font-bold">{name}</span>
                 </div>
-                <span className="text-gray-500">{description}</span>
+                <span id={'project-card-description-' + props.project.getId()}
+                      className="text-gray-500">{description}</span>
             </div>
-            <Menu button={<Button icon={mdiDotsVertical}/>}>
+            <Menu button={<Button id={'project-card-actions-' + props.project.getId()} icon={mdiDotsVertical}/>}>
                 <List>
-                    <ListItem onClick={() => props.onEdit && props.onEdit(props.project)}>
+                    <ListItem id={'project-card-edit-btn-' + props.project.getId()}
+                              onClick={() => props.onEdit && props.onEdit(props.project)}>
                         {t('project.item.buttons.edit')}
                     </ListItem>
-                    <ListItem onClick={() => props.onDelete && props.onDelete(props.project)}>
+                    <ListItem id={'project-card-delete-btn-' + props.project.getId()}
+                              onClick={() => props.onDelete && props.onDelete(props.project)}>
                         {t('project.item.buttons.delete')}
                     </ListItem>
                 </List>

@@ -4,6 +4,7 @@ import Icon from "@mdi/react";
 import {mdiClose} from "@mdi/js";
 
 type Props = {
+    id?: any,
     onClose?: (e: React.MouseEvent) => void,
     value: boolean,
     title?: React.ReactNode,
@@ -19,10 +20,10 @@ export default function Modal(props: Props) {
         }
     }
 
-    return <div aria-hidden="true" onClick={onContainerClick}
+    return <div id={props.id} aria-hidden="true" onClick={onContainerClick}
                 className={clsx(
-                    "hidden overflow-y-auto overflow-x-hidden bg-black/50 fixed justify-center items-center w-full md:inset-0 h-screen",
-                    {'flex!': props.value}
+                    "overflow-y-auto overflow-x-hidden bg-black/50 fixed justify-center items-center w-full md:inset-0 h-screen",
+                    props.value ? 'flex' : 'hidden'
                 )}>
         <div className="relative p-4 w-full max-w-2xl max-h-full">
             <div className="relative bg-white rounded-lg shadow-sm">

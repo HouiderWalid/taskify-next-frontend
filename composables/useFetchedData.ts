@@ -111,20 +111,7 @@ class CustomRequestBody<ResponseType extends typeof JsonMapper> {
             if (responseCode === 404 || responseCode === 500) {
                 callBack(responseMessage)
             }
-        }).catch(error => callBack(error))
-
-        return this
-    }
-
-    onPaymentFailure = (callBack: Function) => {
-
-        this.#request.then((response: any) => {
-            const responseCode = response.data.code
-            const responseMessage = response.data.messages
-            if (responseCode === 501) {
-                callBack(responseMessage)
-            }
-        }).catch(error => callBack(error))
+        }).catch(error => callBack(error?.message))
 
         return this
     }
@@ -182,6 +169,8 @@ export function useFetchedData<ResponseType extends typeof JsonMapper>(
             const responseCode = response.data.code
             const responseData = response.data.data
             const responseMessage = response.data.messages
+
+            console.log('async request response', response.data)
 
             if (!responseCode) {
                 return resolve({data: model ? new model(response) : response})

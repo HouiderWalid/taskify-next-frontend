@@ -15,6 +15,7 @@ import {useClientLocale} from "@/composables/useServerLocale";
 import moment from "moment";
 
 type Props = {
+    id?: any,
     project?: Project | null;
     pagination: Pagination;
     onPaginate?: (pagination?: ProjectPagination) => void;
@@ -34,6 +35,7 @@ export default function ProjectFormModal(props: Props) {
         name: z.string().min(3, "Project name must have at least 3 characters"),
         due_date: z.string()
             .refine(val => {
+                console.log('val', val);
                 const givenDate = new Date(val);
                 return givenDate.getTime() > Date.now();
             }, {
@@ -59,7 +61,7 @@ export default function ProjectFormModal(props: Props) {
     const {t} = useClientLocale()
     const [serverErrors, setServerErrors] = useState<ServerErrors>({})
     const [name, setName] = useState("")
-    const [date, setDate] = useState(moment(new Date()).format('YYYY-MM-DD HH:mm:ss').toString())
+    const [date, setDate] = useState(moment(new Date()).format('YYYY-MM-DDTHH:mm:ss').toString())
     const [description, setDescription] = useState("")
 
     const modalTitle = useMemo(() => ['project.dialogs.form.title', props.project instanceof Project ? 'edit' : 'create'].join('.'), [props.project])
@@ -138,14 +140,15 @@ export default function ProjectFormModal(props: Props) {
         setDate(props.project.getDueDate())
     }, [props.value])
 
-    return <Modal value={props.value} onClose={() => props.onClose && props.onClose()} title={t(modalTitle)} action={
+    return <Modal id={props.id} value={props.value} onClose={() => props.onClose && props.onClose()}
+                  title={t(modalTitle)} action={
         <>
             {
                 props.project ?
-                    <Button className="w-20" loading={isEditLoading} onClick={() => updateProject()} variant="filled">
+                    <Button id="project-save-button" className="w-20" loading={isEditLoading} onClick={() => updateProject()} variant="filled">
                         {t('project.dialogs.form.buttons.save')}
                     </Button> :
-                    <Button className="w-20" loading={isCreateLoading} onClick={() => createProject()} variant="filled">
+                    <Button id="project-create-button" className="w-20" loading={isCreateLoading} onClick={() => createProject()} variant="filled">
                         {t('project.dialogs.form.buttons.create')}
                     </Button>
             }
@@ -156,16 +159,13 @@ export default function ProjectFormModal(props: Props) {
             }
         </>
     }>
-        <TextField value={name} setValue={setName} id="name" name="name" registerAction={register} label="Name"
-                   placeholder="Enter the project name"
-                   errorMessages={[errors.name?.message ?? serverErrors?.name?.[0]]}/>
-        <TextField value={date} setValue={setDate} id="due_date" name="due_date" registerAction={register}
-                   label="Due Date"
-                   type="datetime-local"
+        <TextField value={name} setValue={setName} id="project_name" name="name" registerAction={register} label="Name"
+                   placeholder="Enter the project name" errorMessages={[errors.name?.message ?? serverErrors?.name?.[0]]}/>
+        <TextField value={date} setValue={setDate} id="project_due_date" name="due_date" registerAction={register}
+                   label="Due Date" type="datetime-local"
                    errorMessages={[errors.due_date?.message ?? serverErrors?.due_date?.[0]]}/>
-        <TextArea value={description} setValue={setDescription} id="description" name="description"
-                  registerAction={register} label="Description"
-                  placeholder="Describe the project"
+        <TextArea value={description} setValue={setDescription} id="project_description" name="description"
+                  registerAction={register} label="Description" placeholder="Describe the project"
                   errorMessages={[errors.description?.message ?? serverErrors?.description?.[0]]}/>
     </Modal>
 }

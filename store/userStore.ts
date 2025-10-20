@@ -60,7 +60,7 @@ export const getToken = (state: StoreState, request?: NextRequest) => {
         if (request) {
             try {
                 const appStateData = JSON.parse(request.cookies.get(encodeURIComponent(STORAGE_PERSISTENCE_KEY))?.value ?? '')
-                token = JSON.parse(String(appStateData?.token).replace(/^"|"$/g, ''))
+                token = JSON.parse(String(appStateData?.token))
             } catch (e) {
 
             }

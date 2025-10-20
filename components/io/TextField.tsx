@@ -20,7 +20,7 @@ type Props = {
 export default function TextField(
     {
         id,
-        value = null,
+        value = undefined,
         setValue = (value)=>{},
         name,
         theme = undefined,

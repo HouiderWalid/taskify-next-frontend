@@ -20,7 +20,7 @@ type Props = {
 export default function TextArea(
     {
         id,
-        value = null,
+        value = undefined,
         setValue = v => {
         },
         name,

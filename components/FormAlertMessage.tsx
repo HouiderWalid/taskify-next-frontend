@@ -22,7 +22,8 @@ export default function FormAlertMessage(
         absolute = false,
         open = false,
         fullWidth = true,
-        onCloseAction = () => {}
+        onCloseAction = () => {
+        }
     }: Props
 ) {
 
@@ -32,18 +33,21 @@ export default function FormAlertMessage(
             return
         }
 
-        setTimeout(() => onCloseAction(), timeout)
+        if (timeout > 0) {
+            setTimeout(() => onCloseAction(), timeout)
+        }
+
     }, [open])
 
     const icon = useMemo(() => type === 'success' ? mdiCheckCircle : type === 'error' ? mdiCloseCircle : mdiAlertCircle, [type])
 
     return <div style={{zIndex: 100}}
                 className={clsx(
-                    'hidden bottom-4 mx-auto left-1/2 items-center w-full p-4 text-white rounded-lg shadow-sm',
-                    open && 'flex!',
+                    'bottom-4 items-center w-full p-4 text-white rounded-lg shadow-sm',
+                    open ? 'flex' : 'hidden',
                     absolute && 'absolute',
-                    fullWidth && 'max-w-xs',
-                    type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-gray-600'
+                    !fullWidth && 'max-w-xs',
+                    type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-500' : 'bg-gray-600'
                 )}>
         {icon && <Icon path={icon} size={1}/>}
         <div className="ms-3 text-sm font-normal">{message}</div>

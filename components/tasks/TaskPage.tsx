@@ -141,7 +141,7 @@ export default function TaskPage() {
                            title={t('task.dialogs.delete.title')} onClose={() => setIsDeleteModalOpen(false)}
                            description={t('task.dialogs.delete.description')}/>
 
-        <FormAlertMessage type={alertStatus} message={alertMessage} absolute={true} timeout={5000} open={!!alertMessage}
+        <FormAlertMessage type={alertStatus} message={alertMessage} absolute={true} fullWidth={false} timeout={5000} open={!!alertMessage}
                           onCloseAction={() => setAlertMessage('')}/>
     </>
 }

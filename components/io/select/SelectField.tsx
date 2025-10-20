@@ -29,7 +29,7 @@ export default function SelectField(
         itemValueKey = 'value',
         itemTextKey = 'text',
         hideDetails = false,
-        value = null,
+        value = undefined,
         registerAction,
         onChange = (e: ChangeEvent<HTMLSelectElement>) => {
         }

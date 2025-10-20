@@ -5,6 +5,7 @@ import Icon from "@mdi/react";
 import {useRouter} from "next/navigation";
 
 type Props = {
+    id?: any,
     className?: string;
     loading?: boolean;
     variant?: 'plain' | 'filled' | 'filled-reversed' | 'outlined' | 'outlined-reversed'
@@ -18,6 +19,7 @@ type Props = {
 
 export default function Button(
     {
+        id = null,
         className = '',
         loading = false,
         variant = 'plain',
@@ -63,7 +65,7 @@ export default function Button(
         }
     }
 
-    return <button type={type} onClick={onButtonClick}
+    return <button id={id} type={type} onClick={onButtonClick}
                    className={`${className} ${icon ? 'px-2 h-10 w-10 rounded-full' : 'px-5 py-2.5 rounded-lg'} ${variantStyle} flex justify-center items-center gap scale-100 active:scale-95 cursor-pointer text-md text-center`}>
         <div className="flex justify-center h-5 items-center">
             {
