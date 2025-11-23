@@ -70,7 +70,7 @@ export default function Button(
         <div className="flex justify-center h-5 items-center">
             {
                 loading ?
-                    <svg v-if="loading" aria-hidden="true" role="status" className="inline w-5 h-full animate-spin"
+                    <svg aria-hidden="true" role="status" className="inline w-5 h-full animate-spin"
                          viewBox="0 0 100 101"
                          fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path

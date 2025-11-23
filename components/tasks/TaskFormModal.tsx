@@ -10,8 +10,6 @@ import {useClientLocale} from "@/composables/useServerLocale";
 import {useEffect, useMemo, useState} from "react";
 import Project from "@/assets/ts/models/project/Project";
 import {useSyncFetchData} from "@/composables/useFetchedData";
-import {useCreateProjectApi} from "@/assets/ts/api/ProjectApis";
-import ProjectPagination from "@/assets/ts/models/project/ProjectPagination";
 import moment from "moment/moment";
 import {useCreateTaskApi, useFormMembersApi, useFormProjectsApi, useUpdateTaskApi} from "@/assets/ts/api/TaskApis";
 import TextField from "@/components/io/TextField";
@@ -31,10 +29,6 @@ type Props = {
     onErrorSnackMessage?: (message: string) => void;
     onClose?: () => void;
     value: boolean
-}
-
-type ServerErrors = {
-    [key: string]: Array<string>;
 }
 
 export default function TaskFormModal(props: Props) {
@@ -65,7 +59,7 @@ export default function TaskFormModal(props: Props) {
 
     const [isCreateLoading, setCreateLoading] = useState<boolean>(false);
     const [isEditLoading, setEditLoading] = useState<boolean>(false);
-    const [serverErrors, setServerErrors] = useState<ServerErrors>({})
+    const [serverErrors, setServerErrors] = useState<object[]>([])
     const modalTitle = useMemo(() => ['project.dialogs.form.title', props.task instanceof Task ? 'edit' : 'create'].join('.'), [props.task])
     const [name, setName] = useState("")
     const [date, setDate] = useState(moment(new Date()).format('YYYY-MM-DD HH:mm:ss').toString())
@@ -80,6 +74,18 @@ export default function TaskFormModal(props: Props) {
         {value: Task.MEDIUM_PRIORITY, text: ['globals.task.priorities', Task.MEDIUM_PRIORITY].join('.')},
         {value: Task.HIGH_PRIORITY, text: ['globals.task.priorities', Task.HIGH_PRIORITY].join('.')}
     ]
+
+    const memberIdServerError = serverErrors.filter((serverError: {
+        path?: string
+    }) => serverError?.path === "member_id")
+    const projectIdServerError = serverErrors.filter((serverError: {
+        path?: string
+    }) => serverError?.path === "project_id")
+    const titleServerError = serverErrors.filter((serverError: { path?: string }) => serverError?.path === "title")
+    const dueDateServerError = serverErrors.filter((serverError: { path?: string }) => serverError?.path === "due_date")
+    const descriptionServerError = serverErrors.filter((serverError: {
+        path?: string
+    }) => serverError?.path === "description")
 
     async function createTask() {
         const isValid = await trigger()
@@ -101,7 +107,7 @@ export default function TaskFormModal(props: Props) {
             page: props.pagination.getCurrentPage()
         }))
             .onStart(() => setCreateLoading(true))
-            .onValidationErrors((errors: ServerErrors) => setServerErrors(errors))
+            .onValidationErrors((errors: any[]) => setServerErrors(errors))
             .onSuccess((taskPagination: TaskPagination, message: string) => {
                 props.onClose && props.onClose();
                 props.onPaginate && props.onPaginate(taskPagination)
@@ -135,15 +141,15 @@ export default function TaskFormModal(props: Props) {
             per_page: props.pagination.getPerPage(),
             page: props.pagination.getCurrentPage()
         }))
-            .onStart(() => setCreateLoading(true))
-            .onValidationErrors((errors: ServerErrors) => setServerErrors(errors))
+            .onStart(() => setEditLoading(true))
+            .onValidationErrors((errors: any[]) => setServerErrors(errors))
             .onSuccess((taskPagination: TaskPagination, message: string) => {
                 props.onClose && props.onClose();
                 props.onPaginate && props.onPaginate(taskPagination)
                 props.onSuccessSnackMessage && props.onSuccessSnackMessage(message)
             }, TaskPagination)
             .onFailure((message: string) => props.onErrorSnackMessage && props.onErrorSnackMessage(message))
-            .onFinished(() => setCreateLoading(false))
+            .onFinished(() => setEditLoading(false))
     }
 
     function getTaskFormProjects() {
@@ -205,21 +211,21 @@ export default function TaskFormModal(props: Props) {
         <Autocomplete label={t('task.dialogs.form.fields.project.title')} itemTextKey={Project.getNameAttributeName()}
                       itemValueKey={Project.getIdAttributeName()} setValue={value => setSelectedProject(value)}
                       placeholder={t('task.dialogs.form.fields.project.placeholder')} value={selectedProject}
-                      name="project" items={projects}/>
+                      name="project" items={projects} errorMessages={[projectIdServerError[0]]}/>
         <Autocomplete label={t('task.dialogs.form.fields.member.title')} itemValueKey={User.getIdAttributeName()}
                       itemTextKey={User.getFullNameAttributeName()} setValue={value => setSelectedMember(value)}
                       placeholder={t('task.dialogs.form.fields.member.placeholder')} value={selectedMember}
-                      name="member" items={members}/>
+                      name="member" items={members} errorMessages={[memberIdServerError[0]]}/>
         <TextField value={name} setValue={setName} id="title" name="title" registerAction={register} label="Name"
                    placeholder="Enter the project name"
-                   errorMessages={[errors.title?.message ?? serverErrors?.name?.[0]]}/>
+                   errorMessages={[errors.title?.message ?? titleServerError[0]]}/>
         <TextField value={date} setValue={setDate} id="due_date" name="due_date" registerAction={register}
                    label="Due Date" type="datetime-local"
-                   errorMessages={[errors.due_date?.message ?? serverErrors?.due_date?.[0]]}/>
+                   errorMessages={[errors.due_date?.message ?? dueDateServerError[0]]}/>
         <RadioButton name="priority" items={priorities} selected={priority} setValue={setPriority}
                      label={t('task.dialogs.form.fields.priority.title')}/>
         <TextArea value={description} setValue={setDescription} id="description" name="description"
                   registerAction={register} label="Description" placeholder="Describe the project"
-                  errorMessages={[errors.description?.message ?? serverErrors?.description?.[0]]}/>
+                  errorMessages={[errors.description?.message ?? descriptionServerError[0]]}/>
     </Modal>
 }

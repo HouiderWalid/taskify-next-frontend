@@ -1,10 +1,10 @@
 import JsonMapper from "@/assets/ts/helpers/JsonMapper";
 import axios, {AxiosHeaders, AxiosRequestConfig, type AxiosResponse, type RawAxiosRequestHeaders} from "axios";
-import snakeCase from 'lodash-es/snakeCase'
 import ApiResponse from "@/assets/ts/models/ApiResponse";
 import {store} from "@/store/store";
 import {NextRequest} from "next/server";
 import {getToken} from "@/store/userStore";
+import {snakeCase} from "@/assets/ts/helpers/helpers";
 
 export type ApiData = {
     data?: JsonObject,
@@ -81,7 +81,7 @@ class CustomRequestBody<ResponseType extends typeof JsonMapper> {
         this.#request.then((response: any) => {
             const responseCode = response.data.code
             if (responseCode === 401) {
-                callBack(response.data.messages)
+                callBack(response.data.messages?.errors ?? [])
             }
         })
 

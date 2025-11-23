@@ -44,3 +44,10 @@ export function apiRequestStringifier(key: string, object: any) {
                         : field.content ?? null
     )
 }
+
+export function snakeCase(str: string) {
+    return str
+        .replace(/([A-Z])/g, '_$1')
+        .replace(/[-\s]+/g, '_')
+        .toLowerCase();
+}

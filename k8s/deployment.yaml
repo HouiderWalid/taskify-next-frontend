@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskify-next-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taskify-next
+  template:
+    metadata:
+      labels:
+        app: taskify-next
+    spec:
+      containers:
+        - name: taskify-next
+          image: <aws-account-id>.dkr.ecr.<region>.amazonaws.com/<docker-image>:<version>
+          ports:
+            - containerPort: 83

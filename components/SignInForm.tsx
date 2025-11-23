@@ -37,8 +37,16 @@ export default function SignInForm() {
     });
 
     const [loading, setLoading] = useState(false);
+    const [serverErrors, setServerErrors] = useState<object[]>([])
     const [alertStatus, setAlertStatus] = useState<'warning' | 'success' | 'error'>('success');
     const [alertMessage, setAlertMessage] = useState('');
+
+    const emailServerError = serverErrors.filter((serverError: {
+        path?: string
+    }) => serverError?.path === "email")
+    const passwordServerError = serverErrors.filter((serverError: {
+        path?: string
+    }) => serverError?.path === "password")
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -49,6 +57,7 @@ export default function SignInForm() {
                 setLoading(true)
                 setAlertMessage('')
             })
+            .onValidationErrors((errors: object[]) => setServerErrors(errors))
             .onSuccess((authData: AuthData) => {
                 dispatch(setUser(authData.getUser()))
                 dispatch(setToken(authData.getAccessToken()))
@@ -67,9 +76,9 @@ export default function SignInForm() {
                           onCloseAction={() => setAlertMessage('')}/>
         <div className="flex flex-col">
             <TextField id="email" name="email" registerAction={register} label="Email" theme="blurry"
-                       placeholder="Enter your email" errorMessages={[errors.email?.message]}/>
+                       placeholder="Enter your email" errorMessages={[errors.email?.message ?? emailServerError[0]]}/>
             <TextField id="password" name="password" registerAction={register} type="password" label="Password"
-                       theme="blurry" placeholder="Enter your password" errorMessages={[errors.password?.message]}/>
+                       theme="blurry" placeholder="Enter your password" errorMessages={[errors.password?.message ?? passwordServerError[0]]}/>
         </div>
         <Button variant="filled-reversed" type="submit" loading={loading}>Sign In</Button>
     </form>

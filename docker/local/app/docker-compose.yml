@@ -1,0 +1,16 @@
+services:
+  store:
+    build:
+      context: ../../../
+      dockerfile: docker/local/app/Dockerfile
+    ports:
+      - "83:83"
+    volumes:
+      - ../../../.:/var/www/html
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - taskify_express_next
+
+networks:
+  taskify_express_next:
+    external: true

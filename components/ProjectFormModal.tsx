@@ -25,10 +25,6 @@ type Props = {
     value: boolean
 }
 
-type ServerErrors = {
-    [key: string]: Array<string>;
-}
-
 export default function ProjectFormModal(props: Props) {
 
     const schema = z.object({
@@ -59,10 +55,16 @@ export default function ProjectFormModal(props: Props) {
     const [isCreateLoading, setCreateLoading] = useState(false)
     const [isEditLoading, setEditLoading] = useState(false)
     const {t} = useClientLocale()
-    const [serverErrors, setServerErrors] = useState<ServerErrors>({})
+    const [serverErrors, setServerErrors] = useState<object[]>([])
     const [name, setName] = useState("")
     const [date, setDate] = useState(moment(new Date()).format('YYYY-MM-DDTHH:mm:ss').toString())
     const [description, setDescription] = useState("")
+
+    const nameServerError = serverErrors.filter((serverError: { path?: string }) => serverError?.path === "name")
+    const dueDateServerError = serverErrors.filter((serverError: { path?: string }) => serverError?.path === "due_date")
+    const descriptionServerError = serverErrors.filter((serverError: {
+        path?: string
+    }) => serverError?.path === "description")
 
     const modalTitle = useMemo(() => ['project.dialogs.form.title', props.project instanceof Project ? 'edit' : 'create'].join('.'), [props.project])
 
@@ -83,7 +85,7 @@ export default function ProjectFormModal(props: Props) {
             page: props.pagination.getCurrentPage()
         }))
             .onStart(() => setCreateLoading(true))
-            .onValidationErrors((errors: ServerErrors) => setServerErrors(errors))
+            .onValidationErrors((errors: any[]) => setServerErrors(errors))
             .onSuccess((projectPagination: ProjectPagination, message: string) => {
                 props.onClose && props.onClose();
                 props.onPaginate && props.onPaginate(projectPagination)
@@ -115,7 +117,7 @@ export default function ProjectFormModal(props: Props) {
             page: props.pagination.getCurrentPage()
         }))
             .onStart(() => setEditLoading(true))
-            .onValidationErrors((errors: ServerErrors) => setServerErrors(errors))
+            .onValidationErrors((errors: any[]) => setServerErrors(errors))
             .onSuccess((projectPagination: ProjectPagination, message: string) => {
                 props.onClose && props.onClose();
                 props.onPaginate && props.onPaginate(projectPagination)
@@ -145,10 +147,12 @@ export default function ProjectFormModal(props: Props) {
         <>
             {
                 props.project ?
-                    <Button id="project-save-button" className="w-20" loading={isEditLoading} onClick={() => updateProject()} variant="filled">
+                    <Button id="project-save-button" className="w-20" loading={isEditLoading}
+                            onClick={() => updateProject()} variant="filled">
                         {t('project.dialogs.form.buttons.save')}
                     </Button> :
-                    <Button id="project-create-button" className="w-20" loading={isCreateLoading} onClick={() => createProject()} variant="filled">
+                    <Button id="project-create-button" className="w-20" loading={isCreateLoading}
+                            onClick={() => createProject()} variant="filled">
                         {t('project.dialogs.form.buttons.create')}
                     </Button>
             }
@@ -160,12 +164,13 @@ export default function ProjectFormModal(props: Props) {
         </>
     }>
         <TextField value={name} setValue={setName} id="project_name" name="name" registerAction={register} label="Name"
-                   placeholder="Enter the project name" errorMessages={[errors.name?.message ?? serverErrors?.name?.[0]]}/>
+                   placeholder="Enter the project name"
+                   errorMessages={[errors.name?.message ?? nameServerError[0]]}/>
         <TextField value={date} setValue={setDate} id="project_due_date" name="due_date" registerAction={register}
                    label="Due Date" type="datetime-local"
-                   errorMessages={[errors.due_date?.message ?? serverErrors?.due_date?.[0]]}/>
+                   errorMessages={[errors.due_date?.message ?? dueDateServerError[0]]}/>
         <TextArea value={description} setValue={setDescription} id="project_description" name="description"
                   registerAction={register} label="Description" placeholder="Describe the project"
-                  errorMessages={[errors.description?.message ?? serverErrors?.description?.[0]]}/>
+                  errorMessages={[errors.description?.message ?? descriptionServerError[0]]}/>
     </Modal>
 }
