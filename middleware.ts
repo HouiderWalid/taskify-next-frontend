@@ -70,7 +70,6 @@ async function checkAuth(request: NextRequest) {
                 store.dispatch(setUser(data))
             }
         } catch (e) {
-
         }
     }
 
@@ -93,7 +92,7 @@ async function checkAuth(request: NextRequest) {
     }
 
     if ([noLocalPathname, pathname].includes(request.nextUrl.pathname)) {
-        return
+        return NextResponse.next()
     }
 
     return NextResponse.redirect(request.nextUrl)

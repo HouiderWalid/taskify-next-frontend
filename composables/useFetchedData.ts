@@ -170,8 +170,6 @@ export function useFetchedData<ResponseType extends typeof JsonMapper>(
             const responseData = response.data.data
             const responseMessage = response.data.messages
 
-            console.log('async request response', response.data)
-
             if (!responseCode) {
                 return resolve({data: model ? new model(response) : response})
             } else if (responseCode > 199 && responseCode < 299) {
